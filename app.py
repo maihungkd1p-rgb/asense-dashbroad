@@ -42,7 +42,7 @@ def load_data():
     current_day = datetime.now().day
     
     # T6 (Tháng Trước)
-    df_june = pd.read_csv('DATA_CUSTOMERS_ALL.csv')
+    df_june = pd.read_csv('./data/DATA_CUSTOMERS_ALL.csv')
     df_june['Ngày'] = pd.to_datetime(df_june['Ngày'], format='%Y-%m-%d', errors='coerce').dt.normalize()
     df_june['Doanh thu'] = pd.to_numeric(df_june['Doanh thu'], errors='coerce').fillna(0)
     df_june['Tháng'] = 'Tháng Trước'
@@ -133,19 +133,43 @@ st.markdown("---")
 # Tầng 2: Góc nhìn chuyên sâu (Insight) & Hành động
 st.subheader("2️⃣ ĐIỂM ĐÒN BẨY & HÀNH ĐỘNG ƯU TIÊN")
 col_a, col_b = st.columns(2)
+    # Logic phân tích Realtime
+    insight_text = "**🔴 VẤN ĐỀ VẬN HÀNH (REALTIME):**\n"
+    action_text = "**🟢 HÀNH ĐỘNG ƯU TIÊN (REALTIME):**\n"
+    has_error = False
+
+    if cust_t7 > cust_t6 and aov_t7 < aov_t6:
+        has_error = True
+        insight_text += f"1. **Nghịch lý dòng khách:** Khách tăng nhưng AOV giảm (chỉ còn {aov_t7:,.0f}đ). Dấu hiệu KTV chỉ chốt dịch vụ mồi giá rẻ.\n"
+        action_text += f"👉 **Cấp bách:** Thưởng nóng hoa hồng cho KTV Upsale thành công hóa đơn trên {aov_t6:,.0f}đ.\n"
+    elif cust_t7 < cust_t6 and rev_t7 < rev_t6:
+        has_error = True
+        insight_text += "1. **Báo động đỏ:** Vừa mất khách, vừa mất doanh thu so với cùng kỳ. Trạng thái kinh doanh đang co hẹp.\n"
+        action_text += "👉 **Cấp bách:** Khởi động Telesale gọi điện tặng Voucher 50% cho tập khách chưa quay lại trong 30 ngày.\n"
+    elif rev_t7 > rev_t6 and aov_t7 > aov_t6:
+        insight_text = "**🟢 ĐIỂM SÁNG VẬN HÀNH (REALTIME):**\n"
+        insight_text += "1. **Tăng trưởng bền vững:** Doanh thu và AOV đều tăng trưởng ấn tượng.\n"
+        action_text += "👉 **Phát huy:** Đổ thêm 20% ngân sách Marketing vào các phễu chiến dịch đang mang lại lượng khách giá trị cao này.\n"
+    else:
+        insight_text = "**🟡 TRẠNG THÁI ỔN ĐỊNH (REALTIME):**\n"
+        insight_text += "1. **Chưa có biến động bất thường:** Các chỉ số cơ bản đang đi ngang hoặc biến động nhẹ.\n"
+        action_text += "👉 **Hành động:** Duy trì quy trình hiện tại, theo dõi sát sao tỷ lệ Upsale của KTV trong các ca đông khách.\n"
+
+    # Kiểm tra số lượt phục vụ
+    if turns_t7 < turns_t6 and aov_t7 > aov_t6:
+        has_error = True
+        insight_text += f"2. **Tín hiệu chững:** Số lượt phục vụ giảm mạnh so với cùng kỳ tháng trước ({turns_t7} vs {turns_t6}).\n"
+        action_text += "👉 **Phòng ngừa:** Rà soát lại việc xếp ca của KTV, tránh tình trạng khách đến không có người làm phải quay về.\n"
+
 with col_a:
-    st.error("""
-    **🔴 VẤN ĐỀ CỐT LÕI (INSIGHTS):**
-    1. **Nghịch lý dòng khách:** Số khách tăng nhưng giá trị chi tiêu trung bình giảm sâu.
-    2. **Đứt gãy dòng tiền lớn:** Doanh thu dồn vào khách mua dịch vụ lẻ dùng 1 lần, các gói liệu trình dài hạn sụt giảm thảm hại.
-    3. **Phụ thuộc cá nhân:** Doanh thu trồi sụt bất thường phụ thuộc hoàn toàn vào 1-2 Kỹ thuật viên xuất sắc.
-    """)
+    if has_error:
+        st.error(insight_text)
+    elif "🟢" in insight_text:
+        st.success(insight_text)
+    else:
+        st.warning(insight_text)
 with col_b:
-    st.success("""
-    **🟢 QUÂN BÀI DOMINO ĐẦU TIÊN (HÀNH ĐỘNG):**
-    👉 Khởi động ngay chiến dịch **"Thưởng nóng tại chỗ"** cho KTV thuyết phục thành công khách mua GÓI dài hạn.
-    Đánh đổi chi phí hoa hồng tức thời để giải quyết cùng lúc 3 vấn đề: kéo dòng tiền lớn về, giải quyết tình trạng lười tư vấn, và dàn đều doanh số.
-    """)
+    st.info(action_text)
 
 st.markdown("---")
 
@@ -196,13 +220,13 @@ with c4:
         fig_pie_t6 = px.pie(df_t6, values='Doanh thu', names='Danh mục', color='Danh mục', title='Tỷ Trọng (Tháng Trước)', hole=0.4,
                             color_discrete_map=cat_colors)
         fig_pie_t6.update_traces(textposition='inside', textinfo='percent', marker=dict(line=dict(color='#FFFFFF', width=1)))
-        fig_pie_t6.update_layout(font_family="Lexend", showlegend=True, legend=dict(orientation="h", yanchor="top", y=-0.2, xanchor="center", x=0.5), margin=dict(t=30, b=120, l=0, r=0))
+        fig_pie_t6.update_layout(font_family="Lexend", showlegend=True, legend=dict(orientation="h", yanchor="top", y=-0.1, xanchor="center", x=0.5), margin=dict(t=30, b=50, l=0, r=0))
         st.plotly_chart(fig_pie_t6, use_container_width=True)
     with p2:
         fig_pie_t7 = px.pie(df_t7, values='Doanh thu', names='Danh mục', color='Danh mục', title='Tỷ Trọng (Tháng Hiện Tại)', hole=0.4,
                             color_discrete_map=cat_colors)
         fig_pie_t7.update_traces(textposition='inside', textinfo='percent', marker=dict(line=dict(color='#FFFFFF', width=1)))
-        fig_pie_t7.update_layout(font_family="Lexend", showlegend=True, legend=dict(orientation="h", yanchor="top", y=-0.2, xanchor="center", x=0.5), margin=dict(t=30, b=120, l=0, r=0))
+        fig_pie_t7.update_layout(font_family="Lexend", showlegend=True, legend=dict(orientation="h", yanchor="top", y=-0.1, xanchor="center", x=0.5), margin=dict(t=30, b=50, l=0, r=0))
         st.plotly_chart(fig_pie_t7, use_container_width=True)
 
 st.markdown("---")

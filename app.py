@@ -42,7 +42,7 @@ def load_data():
     current_day = datetime.now().day
     
     # T6 (Tháng Trước)
-    df_june = pd.read_csv('./data/DATA_CUSTOMERS_ALL.csv')
+    df_june = pd.read_csv('DATA_CUSTOMERS_ALL.csv')
     df_june['Ngày'] = pd.to_datetime(df_june['Ngày'], format='%Y-%m-%d', errors='coerce').dt.normalize()
     df_june['Doanh thu'] = pd.to_numeric(df_june['Doanh thu'], errors='coerce').fillna(0)
     df_june['Tháng'] = 'Tháng Trước'

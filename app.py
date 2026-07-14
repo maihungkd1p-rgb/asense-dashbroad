@@ -133,33 +133,33 @@ st.markdown("---")
 # Tầng 2: Góc nhìn chuyên sâu (Insight) & Hành động
 st.subheader("2️⃣ ĐIỂM ĐÒN BẨY & HÀNH ĐỘNG ƯU TIÊN")
 col_a, col_b = st.columns(2)
-    # Logic phân tích Realtime
-    insight_text = "**🔴 VẤN ĐỀ VẬN HÀNH (REALTIME):**\n"
-    action_text = "**🟢 HÀNH ĐỘNG ƯU TIÊN (REALTIME):**\n"
-    has_error = False
+# Logic phân tích Realtime
+insight_text = "**🔴 VẤN ĐỀ VẬN HÀNH (REALTIME):**\n"
+action_text = "**🟢 HÀNH ĐỘNG ƯU TIÊN (REALTIME):**\n"
+has_error = False
 
-    if cust_t7 > cust_t6 and aov_t7 < aov_t6:
-        has_error = True
-        insight_text += f"1. **Nghịch lý dòng khách:** Khách tăng nhưng AOV giảm (chỉ còn {aov_t7:,.0f}đ). Dấu hiệu KTV chỉ chốt dịch vụ mồi giá rẻ.\n"
-        action_text += f"👉 **Cấp bách:** Thưởng nóng hoa hồng cho KTV Upsale thành công hóa đơn trên {aov_t6:,.0f}đ.\n"
-    elif cust_t7 < cust_t6 and rev_t7 < rev_t6:
-        has_error = True
-        insight_text += "1. **Báo động đỏ:** Vừa mất khách, vừa mất doanh thu so với cùng kỳ. Trạng thái kinh doanh đang co hẹp.\n"
-        action_text += "👉 **Cấp bách:** Khởi động Telesale gọi điện tặng Voucher 50% cho tập khách chưa quay lại trong 30 ngày.\n"
-    elif rev_t7 > rev_t6 and aov_t7 > aov_t6:
-        insight_text = "**🟢 ĐIỂM SÁNG VẬN HÀNH (REALTIME):**\n"
-        insight_text += "1. **Tăng trưởng bền vững:** Doanh thu và AOV đều tăng trưởng ấn tượng.\n"
-        action_text += "👉 **Phát huy:** Đổ thêm 20% ngân sách Marketing vào các phễu chiến dịch đang mang lại lượng khách giá trị cao này.\n"
-    else:
-        insight_text = "**🟡 TRẠNG THÁI ỔN ĐỊNH (REALTIME):**\n"
-        insight_text += "1. **Chưa có biến động bất thường:** Các chỉ số cơ bản đang đi ngang hoặc biến động nhẹ.\n"
-        action_text += "👉 **Hành động:** Duy trì quy trình hiện tại, theo dõi sát sao tỷ lệ Upsale của KTV trong các ca đông khách.\n"
+if cust_t7 > cust_t6 and aov_t7 < aov_t6:
+    has_error = True
+    insight_text += f"1. **Nghịch lý dòng khách:** Khách tăng nhưng AOV giảm (chỉ còn {aov_t7:,.0f}đ). Dấu hiệu KTV chỉ chốt dịch vụ mồi giá rẻ.\n"
+    action_text += f"👉 **Cấp bách:** Thưởng nóng hoa hồng cho KTV Upsale thành công hóa đơn trên {aov_t6:,.0f}đ.\n"
+elif cust_t7 < cust_t6 and rev_t7 < rev_t6:
+    has_error = True
+    insight_text += "1. **Báo động đỏ:** Vừa mất khách, vừa mất doanh thu so với cùng kỳ. Trạng thái kinh doanh đang co hẹp.\n"
+    action_text += "👉 **Cấp bách:** Khởi động Telesale gọi điện tặng Voucher 50% cho tập khách chưa quay lại trong 30 ngày.\n"
+elif rev_t7 > rev_t6 and aov_t7 > aov_t6:
+    insight_text = "**🟢 ĐIỂM SÁNG VẬN HÀNH (REALTIME):**\n"
+    insight_text += "1. **Tăng trưởng bền vững:** Doanh thu và AOV đều tăng trưởng ấn tượng.\n"
+    action_text += "👉 **Phát huy:** Đổ thêm 20% ngân sách Marketing vào các phễu chiến dịch đang mang lại lượng khách giá trị cao này.\n"
+else:
+    insight_text = "**🟡 TRẠNG THÁI ỔN ĐỊNH (REALTIME):**\n"
+    insight_text += "1. **Chưa có biến động bất thường:** Các chỉ số cơ bản đang đi ngang hoặc biến động nhẹ.\n"
+    action_text += "👉 **Hành động:** Duy trì quy trình hiện tại, theo dõi sát sao tỷ lệ Upsale của KTV trong các ca đông khách.\n"
 
-    # Kiểm tra số lượt phục vụ
-    if turns_t7 < turns_t6 and aov_t7 > aov_t6:
-        has_error = True
-        insight_text += f"2. **Tín hiệu chững:** Số lượt phục vụ giảm mạnh so với cùng kỳ tháng trước ({turns_t7} vs {turns_t6}).\n"
-        action_text += "👉 **Phòng ngừa:** Rà soát lại việc xếp ca của KTV, tránh tình trạng khách đến không có người làm phải quay về.\n"
+# Kiểm tra số lượt phục vụ
+if turns_t7 < turns_t6 and aov_t7 > aov_t6:
+    has_error = True
+    insight_text += f"2. **Tín hiệu chững:** Số lượt phục vụ giảm mạnh so với cùng kỳ tháng trước ({turns_t7} vs {turns_t6}).\n"
+    action_text += "👉 **Phòng ngừa:** Rà soát lại việc xếp ca của KTV, tránh tình trạng khách đến không có người làm phải quay về.\n"
 
 with col_a:
     if has_error:

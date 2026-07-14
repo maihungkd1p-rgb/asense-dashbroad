@@ -196,13 +196,13 @@ with c4:
         fig_pie_t6 = px.pie(df_t6, values='Doanh thu', names='Danh mục', color='Danh mục', title='Tỷ Trọng (Tháng Trước)', hole=0.4,
                             color_discrete_map=cat_colors)
         fig_pie_t6.update_traces(textposition='inside', textinfo='percent', marker=dict(line=dict(color='#FFFFFF', width=1)))
-        fig_pie_t6.update_layout(font_family="Lexend", showlegend=True, legend=dict(orientation="h", yanchor="top", y=-0.1, xanchor="center", x=0.5), margin=dict(t=30, b=50, l=0, r=0))
+        fig_pie_t6.update_layout(font_family="Lexend", showlegend=True, legend=dict(orientation="h", yanchor="top", y=-0.2, xanchor="center", x=0.5), margin=dict(t=30, b=120, l=0, r=0))
         st.plotly_chart(fig_pie_t6, use_container_width=True)
     with p2:
         fig_pie_t7 = px.pie(df_t7, values='Doanh thu', names='Danh mục', color='Danh mục', title='Tỷ Trọng (Tháng Hiện Tại)', hole=0.4,
                             color_discrete_map=cat_colors)
         fig_pie_t7.update_traces(textposition='inside', textinfo='percent', marker=dict(line=dict(color='#FFFFFF', width=1)))
-        fig_pie_t7.update_layout(font_family="Lexend", showlegend=True, legend=dict(orientation="h", yanchor="top", y=-0.1, xanchor="center", x=0.5), margin=dict(t=30, b=50, l=0, r=0))
+        fig_pie_t7.update_layout(font_family="Lexend", showlegend=True, legend=dict(orientation="h", yanchor="top", y=-0.2, xanchor="center", x=0.5), margin=dict(t=30, b=120, l=0, r=0))
         st.plotly_chart(fig_pie_t7, use_container_width=True)
 
 st.markdown("---")
